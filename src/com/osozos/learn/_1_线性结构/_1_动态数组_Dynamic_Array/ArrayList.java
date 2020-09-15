@@ -66,7 +66,14 @@ public class ArrayList<E> {
     public void add(int index, E element) {
         size++;
         indexOfBounds(index);
-        elements[index] = element;
+        if (size == index + 1) {
+            elements[index] = element;
+        } else {
+            for (int i = size - 2; i >= index; i--) {
+                elements[i + 1] = elements[i];
+            }
+            elements[index] = element;
+        }
     }
 
     /**
@@ -103,7 +110,13 @@ public class ArrayList<E> {
         for (int i = index + 1; i < size; i++) {
             elements[i - 1] = elements[i];
         }
+        size--;
+        elements[size] = null;
         return old;
+    }
+
+    public E remove(E element) {
+        return remove(indexOf(element));
     }
 
     /**
@@ -127,8 +140,29 @@ public class ArrayList<E> {
     public void clear() {
         size = 0;
         elements = (E[]) new Object[DEFAULT_CAPACITY];
-    };
+    }
 
+    /**
+     * 模版化 print
+     * @return 模版字符串
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ArrayList { elements = [");
+        for (int i = 0; i < size; i++) {
+            if (i != 0) {
+                sb.append(", ");
+            }
+            sb.append(elements[i]);
+        }
+        sb.append("], size = ").append(size).append(" }");
+        return sb.toString();
+    }
+
+    /**
+     * 判断索引是否越界
+     * @param index 索引
+     */
     private void indexOfBounds(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index out of bounds: " + index);
