@@ -66,6 +66,7 @@ public class ArrayList<E> {
     public void add(int index, E element) {
         size++;
         indexOfBounds(index);
+        rangeOfBounds();
         if (size == index + 1) {
             elements[index] = element;
         } else {
@@ -166,6 +167,16 @@ public class ArrayList<E> {
     private void indexOfBounds(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index out of bounds: " + index);
+        }
+    }
+
+    private void rangeOfBounds() {
+        if (size > elements.length) {
+            E[] newElement = (E[]) new Object[size + (size >> 1)];
+            for (int i = 0; i < elements.length; i++) {
+                newElement[i] = elements[i];
+            }
+            elements = newElement;
         }
     }
 }

@@ -27,5 +27,10 @@ public class Main {
         // 清理测试
         arrayList.clear();
         System.out.println(arrayList);
+        // 测试扩容
+        for (int i = 1; i <= 100; i++) {
+            arrayList.add(i);
+        }
+        System.out.println(arrayList);
     }
 }
