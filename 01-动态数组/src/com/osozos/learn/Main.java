@@ -1,3 +1,5 @@
+package com.osozos.learn;
+
 public class Main {
     public static void main(String[] args) {
         ArrayList<Integer> arrayList = new ArrayList<>();
@@ -7,7 +9,7 @@ public class Main {
         arrayList.add(3);
         System.out.println(arrayList);
         // 包含测试
-        System.out.println("ArrayList 包含了20, " + arrayList.contains(Integer.valueOf(20)));
+        System.out.println("com.osozos.learn.ArrayList 包含了20, " + arrayList.contains(Integer.valueOf(20)));
         // 添加指定元素位置测试
         arrayList.add(1, 4);
         arrayList.add(0, 5);

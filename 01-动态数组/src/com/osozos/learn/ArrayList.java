@@ -1,3 +1,5 @@
+package com.osozos.learn;
+
 import java.util.Objects;
 
 public class ArrayList<E> {
@@ -147,7 +149,7 @@ public class ArrayList<E> {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ArrayList { elements = [");
+        sb.append("com.osozos.learn.ArrayList { elements = [");
         for (int i = 0; i < size; i++) {
             if (i != 0) {
                 sb.append(", ");
