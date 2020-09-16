@@ -37,6 +37,7 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     public E remove(int index) {
+        indexOfBoundsForAdd(index);
         Node<E> node = first;
         if (index == 0) {
             first = node.next;
@@ -50,6 +51,9 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     public int indexOf(E element) {
+        if (Objects.isNull(first)) {
+            return -1;
+        }
         Node<E> node = first;
         if (Objects.nonNull(element)) {
             for (int i = 0; i < size; i++) {
@@ -92,7 +96,7 @@ public class LinkedList<E> extends AbstractList<E> {
         StringBuilder sb = new StringBuilder();
         sb.append("size = ").append(size);
         if (Objects.nonNull(first)) {
-            sb.append("[");
+            sb.append(", [");
             for (int i = 0; i < size; i++) {
                 if (i != 0) {
                     sb.append(", ");

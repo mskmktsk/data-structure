@@ -11,7 +11,7 @@ public class Main {
         // 包含测试
         System.out.println("包含了 c: " + list.contains("c"));
         // 添加指定元素位置测试
-        list.add(list.size() - 1, "d");
+        list.add(list.size(), "d");
         list.add(0, "e");
         list.add(0, "f");
         System.out.println(list);
