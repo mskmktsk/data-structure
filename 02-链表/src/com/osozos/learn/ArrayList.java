@@ -77,10 +77,6 @@ public class ArrayList<E> extends AbstractList<E> {
         return old;
     }
 
-    public E remove(E element) {
-        return remove(indexOf(element));
-    }
-
     /**
      * 查看元素的位置
      * @param element 元素

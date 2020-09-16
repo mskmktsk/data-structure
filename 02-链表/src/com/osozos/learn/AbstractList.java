@@ -40,6 +40,15 @@ public abstract class AbstractList<E> implements List<E> {
     }
 
     /**
+     * 删除 element 元素
+     * @param element 元素
+     * @return 被删除的元素
+     */
+    public E remove(E element) {
+        return remove(indexOf(element));
+    }
+
+    /**
      * 判断索引是否越界
      * @param index 索引
      */
