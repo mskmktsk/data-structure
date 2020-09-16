@@ -1,5 +1,3 @@
-package com.osozos.learn._1_线性结构._1_动态数组_Dynamic_Array;
-
 import java.util.Objects;
 
 public class ArrayList<E> {
