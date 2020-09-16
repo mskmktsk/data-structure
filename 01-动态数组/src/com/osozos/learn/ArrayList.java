@@ -64,17 +64,17 @@ public class ArrayList<E> {
      * @param element 元素
      */
     public void add(int index, E element) {
-        size++;
-        indexOfBounds(index);
-        rangeOfBounds();
-        if (size == index + 1) {
+        indexOfBoundsForAdd(index);
+        rangeOfBounds(size + 1);
+        if (size == index) {
             elements[index] = element;
         } else {
-            for (int i = size - 2; i >= index; i--) {
-                elements[i + 1] = elements[i];
+            for (int i = size; i > index; i--) {
+                elements[i] = elements[i - 1];
             }
             elements[index] = element;
         }
+        size++;
     }
 
     /**
@@ -111,8 +111,7 @@ public class ArrayList<E> {
         for (int i = index + 1; i < size; i++) {
             elements[i - 1] = elements[i];
         }
-        size--;
-        elements[size] = null;
+        elements[--size] = null;
         return old;
     }
 
@@ -126,10 +125,17 @@ public class ArrayList<E> {
      * @return 如果有则返回对应元素的位置, 如果没有, 则返回 -1
      */
     public int indexOf(E element) {
-        if (Objects.isNull(element)){ return -1; }
-        for (int i = 0; i < size; i++) {
-            if (elements[i].equals(element)) {
-                return i;
+        if (Objects.isNull(element)) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (element.equals(elements[i])) {
+                    return i;
+                }
             }
         }
         return -1;
@@ -139,8 +145,10 @@ public class ArrayList<E> {
      * 清除所有元素
      */
     public void clear() {
-        size = 0;
-        elements = (E[]) new Object[DEFAULT_CAPACITY];
+        while (--size >= 0) {
+            elements[size] = null;
+        }
+        size++;
     }
 
     /**
@@ -166,11 +174,25 @@ public class ArrayList<E> {
      */
     private void indexOfBounds(int index) {
         if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
+            outOfBounds(index);
         }
     }
 
-    private void rangeOfBounds() {
+    /**
+     * 判断索引是否越界
+     * @param index 索引
+     */
+    private void indexOfBoundsForAdd(int index) {
+        if (index > size || index < 0) {
+            outOfBounds(index);
+        }
+    }
+
+    private void outOfBounds(int index) {
+        throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+    }
+
+    private void rangeOfBounds(int size) {
         if (size > elements.length) {
             E[] newElement = (E[]) new Object[size + (size >> 1)];
             for (int i = 0; i < elements.length; i++) {
