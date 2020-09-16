@@ -1,5 +1,7 @@
 package com.osozos.learn;
 
+import java.util.Objects;
+
 public class LinkedList<E> extends AbstractList<E> {
     private Node<E> first;
 
@@ -13,34 +15,92 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     public void add(int index, E element) {
-
+        if (index == 0) {
+            Node<E> node = new Node<>(element, first);
+            first = node;
+        } else {
+            Node<E> prev = node(index - 1);
+            prev.next = new Node<>(element, prev.next);;
+        }
+        size++;
     }
 
     public E get(int index) {
-        return null;
+        return node(index).element;
     }
 
     public E set(int index, E element) {
-        return null;
+        Node<E> node = node(index);
+        E old = node.element;
+        node.element = element;
+        return old;
     }
 
     public E remove(int index) {
-        return null;
-    }
-
-    public E remove(E element) {
-        return null;
+        Node<E> node = first;
+        if (index == 0) {
+            first = node.next;
+        } else {
+            node = node(index);
+            Node<E> prev = node(index - 1);
+            prev.next = node.next;
+        }
+        size--;
+        return node.element;
     }
 
     public int indexOf(E element) {
-        return 0;
+        Node<E> node;
+        if (Objects.nonNull(element)) {
+            for (int i = 0; i < size; i++) {
+                node = node(i);
+                if (element.equals(node.element)) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                node = node(i);
+                if (Objects.isNull(node.element)) {
+                    return i;
+                }
+            }
+        }
+        return ELEMENT_NOT_FOUND;
     }
 
     public void clear() {
+        first = null;
+        size = 0;
+    }
 
+    /**
+     * 获取 index 对应的节点
+     * @param index
+     * @return
+     */
+    private Node<E> node(int index) {
+        indexOfBounds(index);
+        Node<E> node = first;
+        for (int i = 0; i < index; i++) {
+            node = node.next;
+        }
+        return node;
     }
 
     public String toString() {
-        return super.toString();
+        StringBuilder sb = new StringBuilder();
+        if (Objects.nonNull(first)) {
+            sb.append("[");
+            for (int i = 0; i < size; i++) {
+                if (i != 0) {
+                    sb.append(", ");
+                }
+                sb.append(node(i).element);
+            }
+            sb.append("], ");
+        }
+        sb.append("size = " + size);
+        return sb.toString();
     }
 }
