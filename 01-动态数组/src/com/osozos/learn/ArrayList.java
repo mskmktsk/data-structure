@@ -14,6 +14,7 @@ public class ArrayList<E> {
     private int size;
 
     private static final int DEFAULT_CAPACITY = 10;
+    private static final int ELEMENT_NOT_FOUND = -1;
 
     public ArrayList() {
         this(DEFAULT_CAPACITY);
@@ -47,7 +48,7 @@ public class ArrayList<E> {
      * @return 包含: true, 不包含: false
      */
     public boolean contains(E element) {
-        return indexOf(element) != -1;
+        return indexOf(element) != ELEMENT_NOT_FOUND;
     }
 
     /**
@@ -122,7 +123,7 @@ public class ArrayList<E> {
     /**
      * 查看元素的位置
      * @param element 元素
-     * @return 如果有则返回对应元素的位置, 如果没有, 则返回 -1
+     * @return 如果有则返回对应元素的位置, 如果没有, 则返回 ELEMENT_NOT_FOUND
      */
     public int indexOf(E element) {
         if (Objects.isNull(element)) {
@@ -138,7 +139,7 @@ public class ArrayList<E> {
                 }
             }
         }
-        return -1;
+        return ELEMENT_NOT_FOUND;
     }
 
     /**
