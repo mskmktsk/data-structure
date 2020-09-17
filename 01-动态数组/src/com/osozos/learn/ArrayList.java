@@ -113,6 +113,7 @@ public class ArrayList<E> {
             elements[i - 1] = elements[i];
         }
         elements[--size] = null;
+        trim();
         return old;
     }
 
@@ -167,6 +168,22 @@ public class ArrayList<E> {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    /**
+     * 缩容操作
+     */
+    private void trim() {
+        int oldCapacity = elements.length;
+        int newCapacity = oldCapacity >> 1;
+        if (size >= newCapacity || size <= DEFAULT_CAPACITY) {
+            return;
+        }
+        E[] newElements = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
     }
 
     /**
