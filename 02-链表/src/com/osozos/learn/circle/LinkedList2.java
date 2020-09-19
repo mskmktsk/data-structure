@@ -4,7 +4,7 @@ import com.osozos.learn.AbstractList;
 
 import java.util.Objects;
 
-public class LinkedList<E> extends AbstractList<E> {
+public class LinkedList2<E> extends AbstractList<E> {
     private Node<E> first;
     private Node<E> last;
 
@@ -21,22 +21,24 @@ public class LinkedList<E> extends AbstractList<E> {
 
     public void add(int index, E element) {
         if (index == size) {
-            last = new Node<>(last, element, null);
+            last = new Node<>(last, element, first);
             if (Objects.nonNull(last.prev)) {
                 last.prev.next = last;
+                last.next.prev = last;
             } else {
                 first = last;
+                first.next = first;
+                first.prev = first;
             }
         } else {
             Node<E> next = node(index);
             Node<E> prev = next.prev;
             Node<E> node = new Node<>(prev, element, next);
-            if (Objects.nonNull(prev)) {
-                prev.next = node;
-            } else {
+            prev.next = node;
+            next.prev = node;
+            if (index == 0) {
                 first = node;
             }
-            next.prev = node;
         }
         size++;
     }
@@ -55,15 +57,22 @@ public class LinkedList<E> extends AbstractList<E> {
     public E remove(int index) {
         indexOfBounds(index);
         Node<E> node = node(index);
-        if (Objects.nonNull(node.prev)) {
-            node.prev.next = node.next;
-        } else {
+        if (index == 0) {
             first = node.next;
-        }
-        if (Objects.nonNull(node.next)) {
-            node.next.prev = node.prev;
+            first.prev = last;
         } else {
-            last = node.prev;
+            node.prev.next = node.next;
+        }
+        if (index == (size - 1)) {
+            if (size == 1) {
+                first = null;
+                last = null;
+            } else {
+                last = node.prev;
+                last.next = first;
+            }
+        } else {
+            node.next.prev = node.prev;
         }
         size--;
         return node.element;
