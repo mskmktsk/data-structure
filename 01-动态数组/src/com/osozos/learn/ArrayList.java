@@ -7,11 +7,14 @@ public class ArrayList<E> {
      * 内部数组
      */
     private E[] elements;
-
     /**
      * 元素数量
      */
     private int size;
+    /**
+     * 第一个元素索引
+     */
+    private int first;
 
     private static final int DEFAULT_CAPACITY = 10;
     private static final int ELEMENT_NOT_FOUND = -1;
@@ -23,6 +26,7 @@ public class ArrayList<E> {
     public ArrayList(int capacity) {
         capacity = (capacity < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity;
         elements = (E[]) new Object[capacity];
+        first = 0;
         size = 0;
     }
 
@@ -67,15 +71,6 @@ public class ArrayList<E> {
     public void add(int index, E element) {
         indexOfBoundsForAdd(index);
         rangeOfBounds(size + 1);
-        if (size == index) {
-            elements[index] = element;
-        } else {
-            for (int i = size; i > index; i--) {
-                elements[i] = elements[i - 1];
-            }
-            elements[index] = element;
-        }
-        size++;
     }
 
     /**
@@ -85,7 +80,7 @@ public class ArrayList<E> {
      */
     public E get(int index) {
         indexOfBounds(index);
-        return elements[index];
+        return elements[getCurrentIndex(index, size)];
     }
 
     /**
@@ -96,8 +91,9 @@ public class ArrayList<E> {
      */
     public E set(int index, E element) {
         indexOfBounds(index);
-        E old = elements[index];
-        elements[index] = element;
+        int currentIndex = getCurrentIndex(index, size);
+        E old = elements[currentIndex];
+        elements[currentIndex] = element;
         return old;
     }
 
@@ -108,11 +104,8 @@ public class ArrayList<E> {
      */
     public E remove(int index) {
         indexOfBounds(index);
-        E old = elements[index];
-        for (int i = index + 1; i < size; i++) {
-            elements[i - 1] = elements[i];
-        }
-        elements[--size] = null;
+        int currentIndex = getCurrentIndex(index, size);
+        E old = elements[currentIndex];
         trim();
         return old;
     }
@@ -130,13 +123,13 @@ public class ArrayList<E> {
         if (Objects.isNull(element)) {
             for (int i = 0; i < size; i++) {
                 if (elements[i] == null) {
-                    return i;
+                    return getCurrentIndex(i, size);
                 }
             }
         } else {
             for (int i = 0; i < size; i++) {
                 if (element.equals(elements[i])) {
-                    return i;
+                    return getCurrentIndex(i, size);
                 }
             }
         }
@@ -171,6 +164,15 @@ public class ArrayList<E> {
     }
 
     /**
+     * 获取 index 真实下标
+     * @param index 索引
+     * @param size 数组容量
+     * @return 真实下标
+     */
+    private int getCurrentIndex(int index, int size) {
+        return (first + index) % size;
+    }
+    /**
      * 缩容操作
      */
     private void trim() {
@@ -183,6 +185,7 @@ public class ArrayList<E> {
         for (int i = 0; i < size; i++) {
             newElements[i] = elements[i];
         }
+        first = 0;
         elements = newElements;
     }
 
@@ -216,6 +219,7 @@ public class ArrayList<E> {
             for (int i = 0; i < elements.length; i++) {
                 newElement[i] = elements[i];
             }
+            first = 0;
             elements = newElement;
         }
     }
