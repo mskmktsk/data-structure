@@ -7,7 +7,13 @@ public class ArrayList<E> extends AbstractList<E> {
      * 内部数组
      */
     private E[] elements;
-
+    /**
+     * 第一个元素索引
+     */
+    private int first;
+    /**
+     * 默认容量
+     */
     private static final int DEFAULT_CAPACITY = 10;
 
     public ArrayList() {
@@ -28,15 +34,26 @@ public class ArrayList<E> extends AbstractList<E> {
     public void add(int index, E element) {
         indexOfBoundsForAdd(index);
         rangeOfBounds(size + 1);
-        if (size == index) {
-            elements[index] = element;
-        } else {
-            for (int i = size; i > index; i--) {
-                elements[i] = elements[i - 1];
+        if (index >= (size >> 1)) {
+            for (int i = size - 1; i >= index; i--) {
+                elements[getCurrentIndex(i + 1)] = elements[getCurrentIndex(i)];
             }
-            elements[index] = element;
+        } else {
+            for (int i = 0; i <= index; i++) {
+                E current = elements[getCurrentIndex(i)];
+                if (first == 0) {
+                    elements[elements.length - 1] = current;
+                } else {
+                    elements[getCurrentIndex(i - 1)] = current;
+                }
+            }
+            first -= 1;
+            if (first == -1) {
+                first = elements.length - 1;
+            }
         }
         size++;
+        elements[getCurrentIndex(index)] = element;
     }
 
     /**
@@ -46,7 +63,7 @@ public class ArrayList<E> extends AbstractList<E> {
      */
     public E get(int index) {
         indexOfBounds(index);
-        return elements[index];
+        return elements[getCurrentIndex(index)];
     }
 
     /**
@@ -57,8 +74,9 @@ public class ArrayList<E> extends AbstractList<E> {
      */
     public E set(int index, E element) {
         indexOfBounds(index);
-        E old = elements[index];
-        elements[index] = element;
+        int currentIndex = getCurrentIndex(index);
+        E old = elements[currentIndex];
+        elements[currentIndex] = element;
         return old;
     }
 
@@ -69,11 +87,24 @@ public class ArrayList<E> extends AbstractList<E> {
      */
     public E remove(int index) {
         indexOfBounds(index);
-        E old = elements[index];
-        for (int i = index + 1; i < size; i++) {
-            elements[i - 1] = elements[i];
+        int currentIndex = getCurrentIndex(index);
+        E old = elements[currentIndex];
+        if (index >= (size >> 1)) {
+            for (int i = index; i < size; i++) {
+                elements[getCurrentIndex(i)] = elements[getCurrentIndex(i + 1)];
+            }
+            elements[getCurrentIndex(size - 1)] = null;
+        } else {
+            for (int i = index; i > 0; i--) {
+                elements[getCurrentIndex(i)] = elements[getCurrentIndex(i - 1)];
+            }
+            elements[getCurrentIndex(first)] = null;
+            first += 1;
+            if (first == elements.length) {
+                first = 0;
+            }
         }
-        elements[--size] = null;
+        size--;
         trim();
         return old;
     }
@@ -87,13 +118,13 @@ public class ArrayList<E> extends AbstractList<E> {
         if (Objects.isNull(element)) {
             for (int i = 0; i < size; i++) {
                 if (elements[i] == null) {
-                    return i;
+                    return getCurrentIndex(i);
                 }
             }
         } else {
             for (int i = 0; i < size; i++) {
                 if (element.equals(elements[i])) {
-                    return i;
+                    return getCurrentIndex(i);
                 }
             }
         }
@@ -105,8 +136,9 @@ public class ArrayList<E> extends AbstractList<E> {
      */
     public void clear() {
         while (--size >= 0) {
-            elements[size] = null;
+            elements[getCurrentIndex(size)] = null;
         }
+        first = 0;
         size++;
     }
 
@@ -121,10 +153,19 @@ public class ArrayList<E> extends AbstractList<E> {
             if (i != 0) {
                 sb.append(", ");
             }
-            sb.append(elements[i]);
+            sb.append(elements[getCurrentIndex(i)]);
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    /**
+     * 获取 index 真实下标
+     * @param index 索引
+     * @return 真实下标
+     */
+    private int getCurrentIndex(int index) {
+        return (first + index) % elements.length;
     }
 
     /**
@@ -140,15 +181,21 @@ public class ArrayList<E> extends AbstractList<E> {
         for (int i = 0; i < size; i++) {
             newElements[i] = elements[i];
         }
+        first = 0;
         elements = newElements;
     }
 
+    /**
+     * 扩容边界检查
+     * @param size 当前 ArrayList 所需容量
+     */
     private void rangeOfBounds(int size) {
         if (size > elements.length) {
             E[] newElement = (E[]) new Object[size + (size >> 1)];
             for (int i = 0; i < elements.length; i++) {
                 newElement[i] = elements[i];
             }
+            first = 0;
             elements = newElement;
         }
     }
