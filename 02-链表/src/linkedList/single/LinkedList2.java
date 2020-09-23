@@ -1,45 +1,28 @@
-package LinkedList.circle;
+package linkedList.single;
 
-import LinkedList.AbstractList;
+import linkedList.AbstractList;
 
 import java.util.Objects;
 
 public class LinkedList2<E> extends AbstractList<E> {
     private Node<E> first;
-    private Node<E> last;
+
+    public LinkedList2() {
+        first = new Node<>(null, null);
+    }
 
     private static class Node<E> {
         E element;
-        Node<E> prev;
         Node<E> next;
-        public Node(Node<E> prev, E element, Node<E> next) {
-            this.prev = prev;
+        public Node(E element, Node<E> next) {
             this.element = element;
             this.next = next;
         }
     }
 
     public void add(int index, E element) {
-        if (index == size) {
-            last = new Node<>(last, element, first);
-            if (Objects.nonNull(last.prev)) {
-                last.prev.next = last;
-                last.next.prev = last;
-            } else {
-                first = last;
-                first.next = first;
-                first.prev = first;
-            }
-        } else {
-            Node<E> next = node(index);
-            Node<E> prev = next.prev;
-            Node<E> node = new Node<>(prev, element, next);
-            prev.next = node;
-            next.prev = node;
-            if (index == 0) {
-                first = node;
-            }
-        }
+        Node<E> prev = index == 0 ? first : node(index - 1);
+        prev.next = new Node<>(element, prev.next);;
         size++;
     }
 
@@ -56,31 +39,16 @@ public class LinkedList2<E> extends AbstractList<E> {
 
     public E remove(int index) {
         indexOfBounds(index);
-        Node<E> node = node(index);
-        if (index == 0) {
-            first = node.next;
-            first.prev = last;
-        } else {
-            node.prev.next = node.next;
-        }
-        if (index == (size - 1)) {
-            if (size == 1) {
-                first = null;
-                last = null;
-            } else {
-                last = node.prev;
-                last.next = first;
-            }
-        } else {
-            node.next.prev = node.prev;
-        }
+        Node<E> prev = index == 0 ? first : node(index - 1);
+        Node<E> node = prev.next;
+        prev.next = node.next;
         size--;
         return node.element;
     }
 
     public int indexOf(E element) {
-        if (Objects.nonNull(first)) {
-            Node<E> node = first;
+        if (Objects.nonNull(first.next)) {
+            Node<E> node = first.next;
             if (Objects.nonNull(element)) {
                 for (int i = 0; i < size; i++) {
                     if (element.equals(node.element)) {
@@ -101,8 +69,7 @@ public class LinkedList2<E> extends AbstractList<E> {
     }
 
     public void clear() {
-        first = null;
-        last = null;
+        first.next = null;
         size = 0;
     }
 
@@ -113,25 +80,17 @@ public class LinkedList2<E> extends AbstractList<E> {
      */
     private Node<E> node(int index) {
         indexOfBounds(index);
-        if (index > (size >> 1)) {
-            Node<E> node = first;
-            for (int i = 0; i < index; i++) {
-                node = node.next;
-            }
-            return node;
-        } else {
-            Node<E> node = last;
-            for (int i = size - 1; i > index; i--) {
-                node = node.prev;
-            }
-            return node;
+        Node<E> node = first.next;
+        for (int i = 0; i < index; i++) {
+            node = node.next;
         }
+        return node;
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("size = ").append(size);
-        if (Objects.nonNull(first)) {
+        if (Objects.nonNull(first.next)) {
             sb.append(", [");
             for (int i = 0; i < size; i++) {
                 if (i != 0) {
