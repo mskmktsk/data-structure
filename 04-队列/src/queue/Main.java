@@ -1,10 +1,31 @@
 package queue;
 
+import queue.circle.CirCleQueue;
+
 public class Main {
     public static void main(String[] args) {
         printQueue();
         printDeque();
+        printCircleQueue();
     }
+
+    public static void printCircleQueue() {
+        System.out.println("循环队列:");
+        CirCleQueue<Integer> queue = new CirCleQueue<>();
+        for (int i = 1; i <= 10; i++) {
+            queue.enQueue(i);
+        }
+        System.out.println("front: " + queue.front());
+        System.out.println(queue);
+        while (queue.size() > 1) {
+            queue.deQueue();
+            System.out.println(queue);
+        }
+        queue.enQueue(11);
+        queue.enQueue(12);
+        System.out.println(queue);
+    }
+
     public static void printDeque() {
         System.out.println("双端队列:");
         Deque<Integer> deque = new Deque<>();
@@ -26,6 +47,7 @@ public class Main {
             }
         }
     }
+
     public static void printQueue() {
         System.out.println("队列:");
         Queue<Integer> queue = new Queue<>();
