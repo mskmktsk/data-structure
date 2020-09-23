@@ -1,4 +1,6 @@
-package learn;
+package Stack;
+
+import Queue.Stack;
 
 public class Main {
     public static void main(String[] args) {

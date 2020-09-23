@@ -1,4 +1,4 @@
-package com.osozos.learn;
+package com.osozos.LinkedList;
 
 import java.util.Objects;
 

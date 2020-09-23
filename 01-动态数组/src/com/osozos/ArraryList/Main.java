@@ -1,4 +1,4 @@
-package com.osozos.learn;
+package com.osozos.ArraryList;
 
 public class Main {
     public static void main(String[] args) {

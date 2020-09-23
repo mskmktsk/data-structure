@@ -1,6 +1,6 @@
-package com.osozos.learn.single;
+package com.osozos.LinkedList.single;
 
-import com.osozos.learn.AbstractList;
+import com.osozos.LinkedList.AbstractList;
 
 import java.util.Objects;
 

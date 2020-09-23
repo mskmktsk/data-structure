@@ -1,12 +1,16 @@
-package com.osozos.learn;
+package Stack;
 
 import java.util.Objects;
 
-public class ArrayList<E> extends AbstractList<E> {
+public class ArrayList<E> {
     /**
      * 内部数组
      */
     private E[] elements;
+    /**
+     * 元素数量
+     */
+    private int size;
     /**
      * 第一个元素索引
      */
@@ -15,6 +19,10 @@ public class ArrayList<E> extends AbstractList<E> {
      * 默认容量
      */
     private static final int DEFAULT_CAPACITY = 10;
+    /**
+     * 找不到元素的返回值
+     */
+    private static final int ELEMENT_NOT_FOUND = -1;
 
     public ArrayList() {
         this(DEFAULT_CAPACITY);
@@ -23,7 +31,41 @@ public class ArrayList<E> extends AbstractList<E> {
     public ArrayList(int capacity) {
         capacity = (capacity < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capacity;
         elements = (E[]) new Object[capacity];
+        first = 0;
         size = 0;
+    }
+
+    /**
+     * 元素的数量
+     * @return size
+     */
+    public int size() {
+        return size;
+    };
+
+    /**
+     * 是否为空
+     * @return 为空: true, 不为空: false
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    /**
+     * 是否包含某个元素
+     * @param element 元素
+     * @return 包含: true, 不包含: false
+     */
+    public boolean contains(E element) {
+        return indexOf(element) != ELEMENT_NOT_FOUND;
+    }
+
+    /**
+     * 添加元素到最后面
+     * @param element 元素
+     */
+    public void add(E element) {
+        add(size, element);
     }
 
     /**
@@ -110,6 +152,15 @@ public class ArrayList<E> extends AbstractList<E> {
     }
 
     /**
+     * 删除指定元素（如果存在的话）
+     * @param element 被删除元素
+     * @return 被删除的元素
+     */
+    public E remove(E element) {
+        return remove(indexOf(element));
+    }
+
+    /**
      * 查看元素的位置
      * @param element 元素
      * @return 如果有则返回对应元素的位置, 如果没有, 则返回 ELEMENT_NOT_FOUND
@@ -183,6 +234,34 @@ public class ArrayList<E> extends AbstractList<E> {
         }
         first = 0;
         elements = newElements;
+    }
+
+    /**
+     * 判断索引是否越界
+     * @param index 索引
+     */
+    private void indexOfBounds(int index) {
+        if (index >= size || index < 0) {
+            outOfBounds(index);
+        }
+    }
+
+    /**
+     * 判断索引是否越界
+     * @param index 索引
+     */
+    private void indexOfBoundsForAdd(int index) {
+        if (index > size || index < 0) {
+            outOfBounds(index);
+        }
+    }
+
+    /**
+     * 抛出异常下标
+     * @param index 出现异常的下标
+     */
+    private void outOfBounds(int index) {
+        throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
     }
 
     /**

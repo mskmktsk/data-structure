@@ -1,4 +1,4 @@
-package learn;
+package Stack;
 
 public class Stack<E> {
     private ArrayList<E> list;

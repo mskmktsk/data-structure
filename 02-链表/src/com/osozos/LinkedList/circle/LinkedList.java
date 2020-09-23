@@ -1,6 +1,6 @@
-package com.osozos.learn.single;
+package com.osozos.LinkedList.circle;
 
-import com.osozos.learn.AbstractList;
+import com.osozos.LinkedList.AbstractList;
 
 import java.util.Objects;
 
@@ -18,8 +18,16 @@ public class LinkedList<E> extends AbstractList<E> {
 
     public void add(int index, E element) {
         if (index == 0) {
-            Node<E> node = new Node<>(element, first);
-            first = node;
+            if (size == 0) {
+                Node<E> node = new Node<>(element, null);
+                first = node;
+                first.next = first;
+            } else {
+                Node<E> last = node(size - 1);
+                Node<E> node = new Node<>(element, first);
+                first = node;
+                last.next = first;
+            }
         } else {
             Node<E> prev = node(index - 1);
             prev.next = new Node<>(element, prev.next);;
@@ -42,7 +50,13 @@ public class LinkedList<E> extends AbstractList<E> {
         indexOfBounds(index);
         Node<E> node = first;
         if (index == 0) {
-            first = node.next;
+            if (size == 1) {
+                first = null;
+            } else {
+                Node<E> last = node(size - 1);
+                first = node.next;
+                last.next = first;
+            }
         } else {
             Node<E> prev = node(index - 1);
             node = prev.next;

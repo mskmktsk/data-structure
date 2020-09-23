@@ -1,4 +1,4 @@
-package com.osozos.learn;
+package com.osozos.ArraryList;
 
 import java.util.Objects;
 
