@@ -37,6 +37,10 @@ public class Deque<E> {
         return list.get(size() - 1);
     }
 
+    public void clear() {
+        list.clear();
+    }
+
     public String toString() {
         int size = size();
         StringBuilder sb = new StringBuilder();
