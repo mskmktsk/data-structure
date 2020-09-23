@@ -21,6 +21,7 @@ public class CirCleQueue<E> {
     }
 
     public void enQueue(E element) {
+        ensureCapacity(size + 1);
         elements[current(size)] = element;
         size++;
     }
@@ -61,6 +62,18 @@ public class CirCleQueue<E> {
             sb.append(" < (rear)");
         }
         return sb.toString();
+    }
+
+    private void ensureCapacity(int capacity) {
+        int oldCapacity = elements.length;
+        if (oldCapacity >= capacity) return;
+
+        E[] newElements = (E[]) new Object[oldCapacity + oldCapacity >> 1];
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[current(i)];
+        }
+        elements = newElements;
+        front = 0;
     }
 
     private int current(int i) {
