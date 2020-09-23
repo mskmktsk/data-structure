@@ -1,6 +1,4 @@
-package com.osozos.LinkedList;
-
-import java.util.Objects;
+package LinkedList;
 
 public interface List<E> {
 

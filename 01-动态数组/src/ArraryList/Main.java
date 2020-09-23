@@ -1,4 +1,4 @@
-package com.osozos.ArraryList;
+package ArraryList;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.osozos.LinkedList;
+package LinkedList;
 
 public abstract class AbstractList<E> implements List<E> {
     /**
