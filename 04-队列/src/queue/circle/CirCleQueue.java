@@ -2,13 +2,13 @@ package queue.circle;
 
 public class CirCleQueue<E> {
     private int size;
-    private int first;
+    private int front;
     private E[] elements;
     private static final int DEFAULT_CAPACITY = 10;
 
     public CirCleQueue() {
         size = 0;
-        first = 0;
+        front = 0;
         elements = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
@@ -26,15 +26,15 @@ public class CirCleQueue<E> {
     }
 
     public E deQueue() {
-        E element = elements[first++];
-        elements[first - 1] = null;
-        first = first == elements.length ? 0 : first;
+        E element = elements[front++];
+        elements[front - 1] = null;
+        front = front == elements.length ? 0 : front;
         size--;
         return element;
     }
 
     public E front() {
-        return elements[first];
+        return elements[front];
     }
 
     public void clear() {
@@ -42,16 +42,16 @@ public class CirCleQueue<E> {
             elements[current(i)] = null;
         }
         size = 0;
-        first = 0;
+        front = 0;
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("size = ")
                 .append(size)
-                .append(", first = ")
-                .append(first)
-                .append(", last = ")
+                .append(", front_index = ")
+                .append(front)
+                .append(", rear_index = ")
                 .append(current(size - 1));
         if (!isEmpty()) {
             for (int i = 0; i < size; i++) {
@@ -64,6 +64,6 @@ public class CirCleQueue<E> {
     }
 
     private int current(int i) {
-        return (first + i) % elements.length;
+        return (front + i) % elements.length;
     }
 }
