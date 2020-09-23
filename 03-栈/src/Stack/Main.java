@@ -1,6 +1,6 @@
 package Stack;
 
-import Queue.Stack;
+import queue.Stack;
 
 public class Main {
     public static void main(String[] args) {
