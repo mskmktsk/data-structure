@@ -1,5 +1,6 @@
 package queue;
 
+import queue.circle.CirCleDeque;
 import queue.circle.CirCleQueue;
 
 public class Main {
@@ -7,6 +8,29 @@ public class Main {
         printQueue();
         printDeque();
         printCircleQueue();
+        printCircleDeque();
+    }
+
+    public static void printCircleDeque() {
+        System.out.println("双端循环队列:");
+        CirCleDeque<Integer> deque = new CirCleDeque<>();
+        deque.enQueueFront(1);
+        deque.enQueueFront(2);
+        deque.enQueueFront(3);
+        deque.enQueueRear(4);
+        deque.enQueueRear(5);
+        deque.enQueueRear(6);
+        System.out.println(deque);
+        System.out.println("Deque front: " + deque.front());
+        System.out.println("Deque  rear: " + deque.rear());
+        while (!deque.isEmpty()) {
+            if (deque.size() % 2 == 0) {
+                System.out.println("deQueue front: " + deque.deQueueFront());
+            } else {
+                System.out.println("deQueue  rear: " + deque.deQueueRear());
+                System.out.println(deque);
+            }
+        }
     }
 
     public static void printCircleQueue() {
