@@ -19,6 +19,10 @@ public class Main {
 
         BinaryTrees.println(bst);
         bst.preorderTraversal();
+        System.out.println();
+        bst.inorderTraversal();
+        System.out.println();
+        bst.postorderTraversal();
     }
 
 }
