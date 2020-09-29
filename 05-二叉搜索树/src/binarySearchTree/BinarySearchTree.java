@@ -1,12 +1,13 @@
 package binarySearchTree;
 
+import binarySearchTree.printer.BinaryTreeInfo;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 import java.util.Comparator;
 import java.util.Objects;
 
-public class BinarySearchTree<E> {
+public class BinarySearchTree<E> implements BinaryTreeInfo {
     private int size;
     private Node<E> root;
     private Comparator<E> comparator;
@@ -66,6 +67,26 @@ public class BinarySearchTree<E> {
 
     public boolean contains(E element) {
         return false;
+    }
+
+    @Override
+    public Object root() {
+        return root;
+    }
+
+    @Override
+    public Object left(Object node) {
+        return ((Node<E>)node).left;
+    }
+
+    @Override
+    public Object right(Object node) {
+        return ((Node<E>)node).right;
+    }
+
+    @Override
+    public Object string(Object node) {
+        return ((Node<E>)node).element;
     }
 
     private int compareTo(E e1, E e2) {
