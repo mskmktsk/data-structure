@@ -23,6 +23,8 @@ public class Main {
         bst.inorderTraversal();
         System.out.println();
         bst.postorderTraversal();
+        System.out.println();
+        bst.levelOrderTraversal();
     }
 
 }

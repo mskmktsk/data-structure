@@ -4,8 +4,7 @@ import binarySearchTree.printer.BinaryTreeInfo;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 
 public class BinarySearchTree<E> implements BinaryTreeInfo {
     private int size;
@@ -107,6 +106,24 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         postorderTraversal(node.left);
         postorderTraversal(node.right);
         System.out.print(node.element + ",");
+    }
+
+    public void levelOrderTraversal() {
+        if (Objects.isNull(root)) {
+            return;
+        }
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            Node<E> node = queue.poll();
+            System.out.print(node.element + ",");
+            if (Objects.nonNull(node.left)) {
+                queue.offer(node.left);
+            }
+            if (Objects.nonNull(node.right)) {
+                queue.offer(node.right);
+            }
+        }
     }
 
     @Override
