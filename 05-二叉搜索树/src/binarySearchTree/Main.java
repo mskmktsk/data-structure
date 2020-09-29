@@ -3,8 +3,6 @@ package binarySearchTree;
 import binarySearchTree.printer.BinaryTrees;
 
 import java.util.Arrays;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,6 +18,7 @@ public class Main {
         Arrays.stream(data).forEach(bst::add);
 
         BinaryTrees.println(bst);
+        bst.preorderTraversal();
     }
 
 }

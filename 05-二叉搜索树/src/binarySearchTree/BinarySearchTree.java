@@ -50,6 +50,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             } else if (cmp < 0) {
                 node = node.left;
             } else {
+                node.element = element;
                 return;
             }
         }
@@ -67,6 +68,19 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
     public boolean contains(E element) {
         return false;
+    }
+
+    public void preorderTraversal() {
+        preorderTraversal(root);
+    }
+
+    private void preorderTraversal(Node node) {
+        if (Objects.isNull(node)) {
+            return;
+        }
+        System.out.print(node.element + ",");
+        preorderTraversal(node.left);
+        preorderTraversal(node.right);
     }
 
     @Override
