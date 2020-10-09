@@ -14,6 +14,19 @@ public class Main {
 
         BinaryTrees.println(bst);
         printer(bst);
+        System.out.println();
+
+        System.out.println("Tree contains 9: " + bst.contains(9));
+        bst.remove(9);
+        System.out.println("remove 9");
+        System.out.println("Tree contains 9: " + bst.contains(9));
+        BinaryTrees.println(bst);
+        printer(bst);
+        System.out.println();
+
+        bst.clear();
+        BinaryTrees.println(bst);
+        System.out.println("Tree clear.");
     }
 
     public static void printer(BinarySearchTree<Integer> bst) {

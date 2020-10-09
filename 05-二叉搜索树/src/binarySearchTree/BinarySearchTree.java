@@ -28,6 +28,8 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     }
 
     public void clear() {
+        root = null;
+        size = 0;
     }
 
     public void add(@NotNull E element) {
@@ -63,10 +65,43 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     }
 
     public void remove(E element) {
+        remove(node(element));
+    }
+
+    private void remove(Node<E> node) {
+        if (Objects.isNull(node)) {
+            return;
+        }
+        if (node.hasTwoChildren()) {
+            Node<E> s = successor(node);
+            node.element = s.element;
+            node = s;
+        }
+
+        Node<E> replacement = Objects.nonNull(node.left) ? node.left : node.right;
+
+        if (Objects.nonNull(replacement)) {
+            if (Objects.isNull(node.parent)) {
+                root = replacement;
+            }
+            else if (replacement == node.left) {
+                node.parent.left = replacement;
+            } else {
+                node.parent.right = replacement;
+            }
+        } else if (Objects.isNull(node.parent)) {
+            root = null;
+        } else {
+            if (node == node.parent.left) {
+                node.parent.left = null;
+            } else {
+                node.parent.right = null;
+            }
+        }
     }
 
     public boolean contains(E element) {
-        return false;
+        return Objects.nonNull(node(element));
     }
 
     public void levelOrder(Visitor<E> visitor) {
@@ -216,6 +251,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             while (Objects.nonNull(p.left)) {
                 p = p.left;
             }
+            return p;
         }
 
         // 从父节点、祖父节点中寻找前驱节点
@@ -244,6 +280,24 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     @Override
     public Object string(Object node) {
         return ((Node<E>)node).element;
+    }
+
+    private Node<E> node(E element) {
+        Node<E> node = root;
+        int cmp;
+        while (Objects.nonNull(node)) {
+            cmp = compareTo(node.element, element);
+            if (cmp == 0) {
+                return node;
+            }
+            else if (cmp > 0) {
+                node = node.left;
+            }
+            else {
+                node = node.right;
+            }
+        }
+        return null;
     }
 
     private int compareTo(E e1, E e2) {
