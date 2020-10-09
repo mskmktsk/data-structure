@@ -263,9 +263,17 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         Node<E> right;
         Node<E> parent;
 
-        public Node(E element, Node parent) {
+        public Node(E element, Node<E> parent) {
             this.element = element;
             this.parent = parent;
+        }
+
+        public boolean isLeaf() {
+            return Objects.isNull(left)&& Objects.isNull(right);
+        }
+
+        public boolean hasTwoChildren() {
+            return Objects.nonNull(left) && Objects.nonNull(right);
         }
     }
 }
