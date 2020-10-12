@@ -39,14 +39,4 @@ public class Main {
             }
         });
     }
-
-    public static void printer2(BinarySearchTree<Integer> bst) {
-        bst.preorderTraversal();
-        System.out.println();
-        bst.inorderTraversal();
-        System.out.println();
-        bst.postorderTraversal();
-        System.out.println();
-        bst.levelOrderTraversal();
-    }
 }
