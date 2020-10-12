@@ -16,6 +16,8 @@ public class Main {
         printer(bst);
         System.out.println();
 
+        System.out.println("Tree height：" + bst.height());
+
         System.out.println("Tree contains 9: " + bst.contains(9));
         bst.remove(9);
         System.out.println("remove 9");
