@@ -12,6 +12,15 @@ import java.util.Queue;
 public class BinaryTree<E> implements BinaryTreeInfo {
     protected int size;
     protected Node<E> root;
+    protected Comparator<E> comparator;
+
+    public BinaryTree() {
+        this(null);
+    }
+
+    public BinaryTree(Comparator comparator) {
+        this.comparator = comparator;
+    }
 
     public int size() {
         return size;
@@ -24,6 +33,63 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     public void clear() {
         root = null;
         size = 0;
+    }
+
+    public void levelOrder(Visitor<E> visitor) {
+        if (Objects.isNull(visitor)) {
+            return;
+        }
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            Node<E> node = queue.poll();
+            visitor.visit(node.element);
+            if (Objects.nonNull(node.left)) {
+                queue.offer(node.left);
+            }
+            if (Objects.nonNull(node.right)) {
+                queue.offer(node.right);
+            }
+        }
+    }
+
+    public void preorder(Visitor<E> visitor) {
+        preorder(root, visitor);
+    }
+
+    private void preorder(Node<E> node, Visitor<E> visitor) {
+        if (Objects.isNull(node) || Objects.isNull(visitor)) {
+            return;
+        }
+        visitor.visit(node.element);
+        preorder(node.left, visitor);
+        preorder(node.right, visitor);
+    }
+
+    public void inorder(Visitor<E> visitor) {
+        inorder(root, visitor);
+    }
+
+    private void inorder(Node<E> node, Visitor<E> visitor) {
+        if (Objects.isNull(node) || Objects.isNull(visitor)) {
+            return;
+        }
+        inorder(node.left, visitor);
+        visitor.visit(node.element);
+        inorder(node.right, visitor);
+    }
+
+    public void postorder(Visitor<E> visitor) {
+        postorder(root, visitor);
+    }
+
+    private void postorder(Node<E> node, Visitor<E> visitor) {
+        if (Objects.isNull(node) || Objects.isNull(visitor)) {
+            return;
+        }
+        postorder(node.left, visitor);
+        postorder(node.right, visitor);
+        visitor.visit(node.element);
     }
 
     public int height() {
@@ -106,24 +172,15 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         return node.parent;
     }
 
-    @Override
-    public Object root() {
-        return root;
+    protected int compareTo(E e1, E e2) {
+        if (Objects.nonNull(comparator)) {
+            comparator.compare(e1, e2);
+        }
+        return ((Comparable)e1).compareTo(e2);
     }
 
-    @Override
-    public Object left(Object node) {
-        return ((Node<E>)node).left;
-    }
-
-    @Override
-    public Object right(Object node) {
-        return ((Node<E>)node).right;
-    }
-
-    @Override
-    public Object string(Object node) {
-        return ((Node<E>)node).element;
+    public static interface Visitor<E> {
+        void visit(E element);
     }
 
     protected static final class Node<E> {
@@ -144,5 +201,25 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         public boolean hasTwoChildren() {
             return Objects.nonNull(left) && Objects.nonNull(right);
         }
+    }
+
+    @Override
+    public Object root() {
+        return root;
+    }
+
+    @Override
+    public Object left(Object node) {
+        return ((Node<E>)node).left;
+    }
+
+    @Override
+    public Object right(Object node) {
+        return ((Node<E>)node).right;
+    }
+
+    @Override
+    public Object string(Object node) {
+        return ((Node<E>)node).element;
     }
 }
