@@ -1,6 +1,7 @@
 package avlTree;
 
 import avlTree.binarySearchTree.BinarySearchTree;
+import com.sun.istack.internal.Nullable;
 
 import java.util.Comparator;
 
@@ -9,7 +10,7 @@ public class AVLTree<E> extends BinarySearchTree {
         this(null);
     }
 
-    public AVLTree(Comparator comparator) {
+    public AVLTree(@Nullable Comparator comparator) {
         super(comparator);
     }
 }

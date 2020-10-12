@@ -10,15 +10,6 @@ import java.util.Queue;
 public class BinaryTree<E> implements BinaryTreeInfo {
     protected int size;
     protected Node<E> root;
-    protected Comparator<E> comparator;
-
-    public BinaryTree() {
-        this(null);
-    }
-
-    public BinaryTree(Comparator comparator) {
-        this.comparator = comparator;
-    }
 
     public int size() {
         return size;
@@ -168,13 +159,6 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         }
 
         return node.parent;
-    }
-
-    protected int compareTo(E e1, E e2) {
-        if (Objects.nonNull(comparator)) {
-            comparator.compare(e1, e2);
-        }
-        return ((Comparable)e1).compareTo(e2);
     }
 
     public static interface Visitor<E> {

@@ -7,12 +7,13 @@ import java.util.Comparator;
 import java.util.Objects;
 
 public class BinarySearchTree<E> extends BinaryTree {
+    protected Comparator<E> comparator;
     public BinarySearchTree() {
-        super();
+        this(null);
     }
 
     public BinarySearchTree(@Nullable Comparator comparator) {
-        super(comparator);
+        this.comparator = comparator;
     }
 
     public void add(@NotNull E element) {
@@ -103,5 +104,12 @@ public class BinarySearchTree<E> extends BinaryTree {
             }
         }
         return null;
+    }
+
+    protected int compareTo(E e1, E e2) {
+        if (Objects.nonNull(comparator)) {
+            comparator.compare(e1, e2);
+        }
+        return ((Comparable)e1).compareTo(e2);
     }
 }
