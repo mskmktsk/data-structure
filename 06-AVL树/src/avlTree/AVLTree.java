@@ -13,4 +13,8 @@ public class AVLTree<E> extends BinarySearchTree {
     public AVLTree(@Nullable Comparator comparator) {
         super(comparator);
     }
+
+    public void afterAdd(Node node) {
+
+    }
 }

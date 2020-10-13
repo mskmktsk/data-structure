@@ -21,6 +21,8 @@ public class BinarySearchTree<E> extends BinaryTree {
         if (Objects.isNull(root)) {
             root = new Node<>(element, null);
             size++;
+            // 新添加之后的处理
+            afterAdd(root);
             return;
         }
         // 添加其他节点
@@ -46,7 +48,15 @@ public class BinarySearchTree<E> extends BinaryTree {
             parent.left = cNode;
         }
         size++;
+        // 新添加之后的处理
+        afterAdd(cNode);
     }
+
+    /**
+     * 新添加之后的处理
+     * @param node // 新添加的节点
+     */
+    protected void afterAdd(Node<E> node) {}
 
     public void remove(E element) {
         remove(node(element));
