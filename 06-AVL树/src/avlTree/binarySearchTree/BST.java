@@ -6,20 +6,21 @@ import com.sun.istack.internal.Nullable;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class BinarySearchTree<E> extends BinaryTree {
+public class BST<E> extends BinaryTree<E> {
     protected Comparator<E> comparator;
-    public BinarySearchTree() {
+
+    public BST() {
         this(null);
     }
 
-    public BinarySearchTree(@Nullable Comparator comparator) {
+    public BST(@Nullable Comparator comparator) {
         this.comparator = comparator;
     }
 
     public void add(@NotNull E element) {
         // 添加第一个节点
         if (Objects.isNull(root)) {
-            root = new Node<>(element, null);
+            root = createNode(element, null);
             size++;
             // 新添加之后的处理
             afterAdd(root);
@@ -41,7 +42,7 @@ public class BinarySearchTree<E> extends BinaryTree {
                 return;
             }
         }
-        Node<E> cNode = new Node<>(element, parent);
+        Node<E> cNode = createNode(element, parent);
         if (cmp > 0) {
             parent.right = cNode;
         } else {

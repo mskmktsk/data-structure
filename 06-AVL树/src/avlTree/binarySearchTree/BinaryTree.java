@@ -2,7 +2,6 @@ package avlTree.binarySearchTree;
 
 import avlTree.binarySearchTree.printer.BinaryTreeInfo;
 
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -117,6 +116,16 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         return 1 + Math.max(height2(node.left), height2(node.right));
     }
 
+    /**
+     * 创建节点
+     * @param element 节点内容
+     * @param parent 父节点
+     * @return 新创建的节点
+     */
+    protected Node<E> createNode(E element, Node<E> parent) {
+        return new Node<>(element, parent);
+    }
+
     protected Node<E> predecessor(Node<E> node) {
         if (Objects.isNull(node)) {
             return null;
@@ -165,11 +174,11 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         void visit(E element);
     }
 
-    protected static final class Node<E> {
-        E element;
-        Node<E> left;
-        Node<E> right;
-        Node<E> parent;
+    protected static class Node<E> {
+        public E element;
+        public Node<E> left;
+        public Node<E> right;
+        public Node<E> parent;
 
         public Node(E element, Node<E> parent) {
             this.element = element;
@@ -182,6 +191,14 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
         public boolean hasTwoChildren() {
             return Objects.nonNull(left) && Objects.nonNull(right);
+        }
+
+        public boolean isLeftChild() {
+            return Objects.nonNull(parent) && this == parent.left;
+        }
+
+        public boolean isRightChild() {
+            return Objects.nonNull(parent) && this == parent.right;
         }
     }
 
