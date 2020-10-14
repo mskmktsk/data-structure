@@ -28,6 +28,18 @@ public class AVLTree<E> extends BST<E> {
         }
     }
 
+    protected void afterRemove(Node<E> node) {
+        while (Objects.nonNull((node = node.parent))) {
+            if (isBalance(node)) {
+                // 更新高度
+                updateHeight(node);
+            } else {
+                // 恢复平衡
+                rebalance(node);
+            }
+        }
+    }
+
     private void rebalance(Node<E> grand) {
         Node<E> parent = ((AVLNode)grand).tallerChild();
         Node<E> node = ((AVLNode)parent).tallerChild();

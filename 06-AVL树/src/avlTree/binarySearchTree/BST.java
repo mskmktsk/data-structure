@@ -54,8 +54,8 @@ public class BST<E> extends BinaryTree<E> {
     }
 
     /**
-     * 新添加之后的处理
-     * @param node // 新添加的节点
+     * 新添加 node 后的处理
+     * @param node 新添加的节点
      */
     protected void afterAdd(Node<E> node) {}
 
@@ -84,16 +84,28 @@ public class BST<E> extends BinaryTree<E> {
             } else {
                 node.parent.right = replacement;
             }
+            // 删除 node 后的处理
+            afterRemove(node);
         } else if (Objects.isNull(node.parent)) {
             root = null;
+            // 删除 node 后的处理
+            afterRemove(node);
         } else {
             if (node == node.parent.left) {
                 node.parent.left = null;
             } else {
                 node.parent.right = null;
             }
+            // 删除 node 后的处理
+            afterRemove(node);
         }
     }
+
+    /**
+     * 删除 node 后的处理
+     * @param node 删除的节点
+     */
+    protected void afterRemove(Node<E> node) {}
 
     public boolean contains(E element) {
         return Objects.nonNull(node(element));

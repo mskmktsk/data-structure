@@ -16,5 +16,9 @@ public class Main {
             avl.add(d);
         }
         BinaryTrees.println(avl);
+        System.out.println("--------------------------");
+        avl.remove(1);
+        avl.remove(5);
+        BinaryTrees.println(avl);
     }
 }
