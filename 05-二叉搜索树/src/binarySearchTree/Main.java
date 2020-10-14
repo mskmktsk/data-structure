@@ -9,7 +9,7 @@ public class Main {
         Integer data[] = new Integer[] {
                 7, 4, 9, 2, 5, 8, 11, 3
         };
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        BST<Integer> bst = new BST<>();
         Arrays.stream(data).forEach(bst::add);
 
         BinaryTrees.println(bst);
@@ -31,8 +31,8 @@ public class Main {
         System.out.println("Tree clear.");
     }
 
-    public static void printer(BinarySearchTree<Integer> bst) {
-        bst.inorder(new BinarySearchTree.Visitor<Integer>() {
+    public static void printer(BST<Integer> bst) {
+        bst.inorder(new BST.Visitor<Integer>() {
             @Override
             public void visit(Integer element) {
                 System.out.print("_" + element + "_");

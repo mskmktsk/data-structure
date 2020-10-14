@@ -1,19 +1,18 @@
 package binarySearchTree;
 
-import binarySearchTree.printer.BinaryTreeInfo;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 import java.util.*;
 
-public class BinarySearchTree<E> extends BinaryTree {
+public class BST<E> extends BinaryTree {
     protected Comparator<E> comparator;
 
-    public BinarySearchTree() {
+    public BST() {
         this(null);
     }
 
-    public BinarySearchTree(@Nullable Comparator comparator) {
+    public BST(@Nullable Comparator comparator) {
         this.comparator = comparator;
     }
 
