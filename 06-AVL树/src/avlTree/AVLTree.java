@@ -40,7 +40,7 @@ public class AVLTree<E> extends BST<E> {
         }
     }
 
-    private void rebalance(Node<E> grand) {
+    private void rebalance2(Node<E> grand) {
         Node<E> parent = ((AVLNode)grand).tallerChild();
         Node<E> node = ((AVLNode)parent).tallerChild();
         if (parent.isLeftChild()) { // L
@@ -58,6 +58,70 @@ public class AVLTree<E> extends BST<E> {
                 rotateLeft(grand);
             }
         }
+    }
+
+    private void rebalance(Node<E> grand) {
+        Node<E> parent = ((AVLNode)grand).tallerChild();
+        Node<E> node = ((AVLNode)parent).tallerChild();
+        if (parent.isLeftChild()) { // L
+            if (node.isLeftChild()) { // LL
+                rotate(grand, node.left, node, node.right, parent, parent.right, grand, grand.right);
+            } else { // LR
+                rotate(grand, parent.left, parent, node.left, node, node.right, grand, grand.right);
+            }
+        } else { // R
+            if (node.isLeftChild()) { // RL
+                rotate(grand, grand.left, grand, node.left, node, node.right, parent, parent.right);
+            } else { // RR
+                rotate(grand, grand.left, grand, parent.left, parent, node.left, node, node.right);
+            }
+        }
+    }
+
+    /**
+     * 统一旋转
+     */
+    private void rotate(Node<E> r,
+                        Node<E> a, Node<E> b, Node<E> c,
+                        Node<E> d,
+                        Node<E> e, Node<E> f, Node<E> g) {
+        // 让 d 成为子树的根节点
+        d.parent = r.parent;
+        if (r.isLeftChild()) {
+            r.parent.left = d;
+        } else if (r.isRightChild()) {
+            r.parent.right = d;
+        } else {
+            root = d;
+        }
+
+        // a-b-c
+        b.left = a;
+        if (Objects.nonNull(a)) {
+            a.parent = b;
+        }
+        b.right = c;
+        if (Objects.nonNull(c)) {
+            c.parent = b;
+        }
+        updateHeight(b);
+
+        // e-f-g
+        f.left = e;
+        if (Objects.nonNull(e)) {
+            e.parent = f;
+        }
+        f.right = g;
+        if (Objects.nonNull(g)) {
+            g.parent = f;
+        }
+        updateHeight(f);
+
+        d.left = b;
+        d.right = f;
+        b.parent = d;
+        f.parent = d;
+        updateHeight(d);
     }
 
     private void rotateLeft(Node<E> grand) {
