@@ -1,4 +1,4 @@
-package avlTree;
+package rbTree;
 
 import rbTree.binarySearchTree.BST;
 import com.sun.istack.internal.Nullable;

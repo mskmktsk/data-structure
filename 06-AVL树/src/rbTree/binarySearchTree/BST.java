@@ -1,4 +1,4 @@
-package avlTree.binarySearchTree;
+package rbTree.binarySearchTree;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;

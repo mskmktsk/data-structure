@@ -1,6 +1,6 @@
-package avlTree.binarySearchTree;
+package rbTree.binarySearchTree;
 
-import avlTree.binarySearchTree.printer.BinaryTreeInfo;
+import rbTree.binarySearchTree.printer.BinaryTreeInfo;
 
 import java.util.LinkedList;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package avlTree.binarySearchTree.printer;
+package rbTree.binarySearchTree.printer;
 
 import java.util.*;
 

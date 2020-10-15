@@ -1,4 +1,4 @@
-package avlTree.binarySearchTree.printer;
+package rbTree.binarySearchTree.printer;
 
 public class Strings {
 	public static String repeat(String string, int count) {

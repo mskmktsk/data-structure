@@ -1,4 +1,4 @@
-package avlTree;
+package rbTree;
 
 import rbTree.binarySearchTree.printer.BinaryTrees;
 
