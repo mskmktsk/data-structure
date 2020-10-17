@@ -1,6 +1,6 @@
-package rbTree.binarySearchTree;
+package rbTree;
 
-import rbTree.binarySearchTree.printer.BinaryTreeInfo;
+import rbTree.printer.BinaryTreeInfo;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -200,6 +200,16 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         public boolean isRightChild() {
             return Objects.nonNull(parent) && this == parent.right;
         }
+
+        public Node<E> sibling() {
+            if (isLeftChild()) {
+                return parent.right;
+            }
+            if (isRightChild()) {
+                return parent.left;
+            }
+            return null;
+        }
     }
 
     @Override
@@ -219,6 +229,6 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
     @Override
     public Object string(Object node) {
-        return ((Node<E>)node).element;
+        return node;
     }
 }

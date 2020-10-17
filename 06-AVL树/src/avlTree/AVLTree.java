@@ -1,6 +1,5 @@
 package avlTree;
 
-import rbTree.binarySearchTree.BST;
 import com.sun.istack.internal.Nullable;
 
 import java.util.Comparator;

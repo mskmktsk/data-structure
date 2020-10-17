@@ -1,6 +1,6 @@
 package rbTree;
 
-import rbTree.binarySearchTree.printer.BinaryTrees;
+import rbTree.printer.BinaryTrees;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,14 +11,14 @@ public class Main {
         Integer[] data = new Integer[] {
                 80, 90, 5, 97, 73, 61, 35, 9, 1, 67, 65, 84, 39, 56, 43, 23, 27, 16, 60, 87
         };
-        AVLTree<Integer> avl = new AVLTree<>();
+        RBTree<Integer> rb = new RBTree<>();
         for (Integer d : data) {
-            avl.add(d);
+            rb.add(d);
         }
-        BinaryTrees.println(avl);
-        System.out.println("--------------------------");
-        avl.remove(1);
-        avl.remove(5);
-        BinaryTrees.println(avl);
+        BinaryTrees.println(rb);
+//        System.out.println("--------------------------");
+//        rb.remove(1);
+//        rb.remove(5);
+//        BinaryTrees.println(rb);
     }
 }

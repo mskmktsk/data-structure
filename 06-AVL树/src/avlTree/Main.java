@@ -1,6 +1,6 @@
 package avlTree;
 
-import rbTree.binarySearchTree.printer.BinaryTrees;
+import avlTree.printer.BinaryTrees;
 
 public class Main {
     public static void main(String[] args) {
