@@ -58,6 +58,20 @@ public class RBTree<E> extends BBST<E> {
         }
     }
 
+    @Override
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
+        if (isRed(node)) {
+            return;
+        }
+
+        if (isRed(replacement)) {
+            black(replacement);
+            return;
+        }
+
+
+    }
+
     private Node<E> color(Node<E> node, boolean color) {
         if (Objects.nonNull(node)) {
             ((RBNode<E>)node).color = color;

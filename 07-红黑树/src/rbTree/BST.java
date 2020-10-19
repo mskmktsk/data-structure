@@ -85,11 +85,11 @@ public class BST<E> extends BinaryTree<E> {
                 node.parent.right = replacement;
             }
             // 删除 node 后的处理
-            afterRemove(node);
+            afterRemove(node, replacement);
         } else if (Objects.isNull(node.parent)) {
             root = null;
             // 删除 node 后的处理
-            afterRemove(node);
+            afterRemove(node, null);
         } else {
             if (node == node.parent.left) {
                 node.parent.left = null;
@@ -97,7 +97,7 @@ public class BST<E> extends BinaryTree<E> {
                 node.parent.right = null;
             }
             // 删除 node 后的处理
-            afterRemove(node);
+            afterRemove(node, null);
         }
     }
 
@@ -105,7 +105,7 @@ public class BST<E> extends BinaryTree<E> {
      * 删除 node 后的处理
      * @param node 删除的节点
      */
-    protected void afterRemove(Node<E> node) {}
+    protected void afterRemove(Node<E> node, Node<E> replacement) {}
 
     public boolean contains(E element) {
         return Objects.nonNull(node(element));
