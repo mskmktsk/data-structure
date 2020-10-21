@@ -16,9 +16,11 @@ public class Main {
             rb.add(d);
         }
         BinaryTrees.println(rb);
-//        System.out.println("--------------------------");
-//        rb.remove(1);
-//        rb.remove(5);
-//        BinaryTrees.println(rb);
+        for (Integer d : data) {
+            System.out.println("--------------------------");
+            rb.remove(d);
+            System.out.println("【" + d + "】");
+            BinaryTrees.println(rb);
+        }
     }
 }

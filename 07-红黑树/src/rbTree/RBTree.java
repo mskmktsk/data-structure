@@ -59,17 +59,78 @@ public class RBTree<E> extends BBST<E> {
     }
 
     @Override
-    protected void afterRemove(Node<E> node, Node<E> replacement) {
+    protected void afterRemove(Node<E> node) {
+        // 用以取代 node 的子节点是红节点
         if (isRed(node)) {
+            black(node);
             return;
         }
 
-        if (isRed(replacement)) {
-            black(replacement);
+        Node<E> parent = node.parent;
+        // 删除的是跟节点
+        if (Objects.isNull(parent)) {
             return;
         }
 
-
+        // 删除的是黑色叶子节点
+        // 判断被删除的 node 是左还是右
+        boolean left = Objects.isNull(parent.left) || node.isLeftChild();
+        Node<E> sibling = left ? parent.right : parent.left;
+        if (left) {
+            if (isRed(sibling)) {
+                black(parent);
+                red(sibling);
+                rotateLeft(parent);
+                // 更换兄弟
+                sibling = parent.right;
+            }
+            // 兄弟节点必然是黑色
+            if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                // 兄弟没有一个红色子节点, 父节点要向下跟兄弟节点合并
+                boolean parentBlack = isBlack(parent);
+                black(parent);
+                red(sibling);
+                if (parentBlack) {
+                    afterRemove(parent);
+                }
+            } else { // 兄弟节点至少一个红色子节点
+                if (isBlack(sibling.right)) {
+                    rotateRight(sibling);
+                    sibling = parent.right;
+                }
+                color(sibling, colorOf(parent));
+                black(sibling.right);
+                black(parent);
+                rotateLeft(parent);
+            }
+        } else { // 被删除的节点在右边，兄弟节点在左边
+            if (isRed(sibling)) {
+                red(sibling);
+                black(parent);
+                rotateRight(parent);
+                // 更换兄弟
+                sibling = parent.left;
+            }
+            // 兄弟节点必然是黑色
+            if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                // 兄弟没有一个红色子节点, 父节点要向下跟兄弟节点合并
+                boolean parentBlack = isBlack(parent);
+                black(parent);
+                red(sibling);
+                if (parentBlack) {
+                    afterRemove(parent);
+                }
+            } else { // 兄弟节点至少一个红色子节点
+                if (isBlack(sibling.left)) {
+                    rotateLeft(sibling);
+                    sibling = parent.left;
+                }
+                color(sibling, colorOf(parent));
+                black(sibling.left);
+                black(parent);
+                rotateRight(parent);
+            }
+        }
     }
 
     private Node<E> color(Node<E> node, boolean color) {
@@ -114,7 +175,10 @@ public class RBTree<E> extends BBST<E> {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append(color ? "B" : "R").append("_").append(element);
+            if (color == RED) {
+                sb.append("R").append("_");
+            }
+            sb.append(element);
             return sb.toString();
         }
     }

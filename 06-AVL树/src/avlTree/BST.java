@@ -76,10 +76,11 @@ public class BST<E> extends BinaryTree<E> {
         Node<E> replacement = Objects.nonNull(node.left) ? node.left : node.right;
 
         if (Objects.nonNull(replacement)) {
+            replacement.parent = node.parent;
             if (Objects.isNull(node.parent)) {
                 root = replacement;
             }
-            else if (replacement == node.left) {
+            else if (node == node.parent.left) {
                 node.parent.left = replacement;
             } else {
                 node.parent.right = replacement;
