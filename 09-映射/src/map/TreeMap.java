@@ -242,7 +242,7 @@ public class TreeMap<K, V> implements Map<K, V> {
         if (Objects.isNull(root)) return false;
         Queue<Node<K, V>> queue = new LinkedList<>();
         queue.offer(root);
-        while (queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             Node<K, V> node = queue.poll();
             if (Objects.isNull(value) ? Objects.isNull(node.value) : value.equals(node.value)) {
                 return true;
