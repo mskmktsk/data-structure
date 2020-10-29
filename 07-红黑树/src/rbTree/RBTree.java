@@ -166,7 +166,7 @@ public class RBTree<E> extends BBST<E> {
     }
 
     private static class RBNode<E> extends Node<E> {
-        boolean color;
+        boolean color = RED;
 
         RBNode(E element, Node<E> parent) {
             super(element, parent);
