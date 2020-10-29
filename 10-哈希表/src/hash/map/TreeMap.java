@@ -405,7 +405,7 @@ public class TreeMap<K, V> implements Map<K, V> {
     private static class Node<K, V> {
         K key;
         V value;
-        boolean color;
+        boolean color = RED;
         Node<K, V> left;
         Node<K, V> right;
         Node<K, V> parent;
