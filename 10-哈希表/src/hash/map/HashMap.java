@@ -1,6 +1,8 @@
 package hash.map;
 
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 
 public class HashMap<K, V> implements Map<K, V> {
     private static final boolean BLACK = true;
@@ -96,12 +98,43 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(V value) {
+        if (Objects.isNull(value)) return false;
+        Queue<Node<K, V>> queue = new LinkedList<>();
+        for (int i = 0; i < table.length; i++) {
+            if (Objects.isNull(table[i])) continue;
+            queue.offer(table[i]);
+            while (!queue.isEmpty()) {
+                Node<K, V> node = queue.poll();
+                if (Objects.equals(value, node.value)) return true;
+                if (Objects.nonNull(node.left)) {
+                    queue.offer(node.left);
+                }
+                if (Objects.nonNull(node.right)) {
+                    queue.offer(node.right);
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public void traversal(Visitor<K, V> visitor) {
-
+        if (Objects.isNull(visitor)) return;
+        Queue<Node<K, V>> queue = new LinkedList<>();
+        for (int i = 0; i < table.length; i++) {
+            if (Objects.isNull(table[i])) continue;
+            queue.offer(table[i]);
+            while (!queue.isEmpty()) {
+                Node<K, V> node = queue.poll();
+                if (visitor.visit(node.key, node.value)) return;
+                if (Objects.nonNull(node.left)) {
+                    queue.offer(node.left);
+                }
+                if (Objects.nonNull(node.right)) {
+                    queue.offer(node.right);
+                }
+            }
+        }
     }
     
     private V remove(Node<K, V> node) {
