@@ -86,7 +86,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public V remove(K key) {
-        return null;
+        return remove(node(key));
     }
 
     @Override
@@ -102,6 +102,126 @@ public class HashMap<K, V> implements Map<K, V> {
     @Override
     public void traversal(Visitor<K, V> visitor) {
 
+    }
+    
+    private V remove(Node<K, V> node) {
+
+        if (Objects.isNull(node)) {
+            return null;
+        }
+
+        if (node.hasTwoChildren()) {
+            Node<K, V> s = successor(node);
+            node.key = s.key;
+            V value = node.value;
+            node.value = s.value;
+            s.value = value;
+            node = s;
+        }
+
+        Node<K, V> replacement = Objects.nonNull(node.left) ? node.left : node.right;
+        int index = index(node);
+
+        if (Objects.nonNull(replacement)) {
+            replacement.parent = node.parent;
+            if (Objects.isNull(node.parent)) {
+                table[index] = replacement;
+            }
+            else if (node == node.parent.left) {
+                node.parent.left = replacement;
+            } else {
+                node.parent.right = replacement;
+            }
+            // 删除 node 后的处理
+            afterRemove(replacement);
+        } else if (Objects.isNull(node.parent)) {
+            table[index] = null;
+            // 删除 node 后的处理
+            afterRemove(node);
+        } else {
+            if (node == node.parent.left) {
+                node.parent.left = null;
+            } else {
+                node.parent.right = null;
+            }
+            // 删除 node 后的处理
+            afterRemove(node);
+        }
+        return node.value;
+    }
+
+    private void afterRemove(Node<K, V> node) {
+        // 用以取代 node 的子节点是红节点
+        if (isRed(node)) {
+            black(node);
+            return;
+        }
+
+        Node<K, V> parent = node.parent;
+        // 删除的是跟节点
+        if (Objects.isNull(parent)) {
+            return;
+        }
+
+        // 删除的是黑色叶子节点
+        // 判断被删除的 node 是左还是右
+        boolean left = Objects.isNull(parent.left) || node.isLeftChild();
+        Node<K, V> sibling = left ? parent.right : parent.left;
+        if (left) {
+            if (isRed(sibling)) {
+                black(parent);
+                red(sibling);
+                rotateLeft(parent);
+                // 更换兄弟
+                sibling = parent.right;
+            }
+            // 兄弟节点必然是黑色
+            if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                // 兄弟没有一个红色子节点, 父节点要向下跟兄弟节点合并
+                boolean parentBlack = isBlack(parent);
+                black(parent);
+                red(sibling);
+                if (parentBlack) {
+                    afterRemove(parent);
+                }
+            } else { // 兄弟节点至少一个红色子节点
+                if (isBlack(sibling.right)) {
+                    rotateRight(sibling);
+                    sibling = parent.right;
+                }
+                color(sibling, colorOf(parent));
+                black(sibling.right);
+                black(parent);
+                rotateLeft(parent);
+            }
+        } else { // 被删除的节点在右边，兄弟节点在左边
+            if (isRed(sibling)) {
+                red(sibling);
+                black(parent);
+                rotateRight(parent);
+                // 更换兄弟
+                sibling = parent.left;
+            }
+            // 兄弟节点必然是黑色
+            if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                // 兄弟没有一个红色子节点, 父节点要向下跟兄弟节点合并
+                boolean parentBlack = isBlack(parent);
+                black(parent);
+                red(sibling);
+                if (parentBlack) {
+                    afterRemove(parent);
+                }
+            } else { // 兄弟节点至少一个红色子节点
+                if (isBlack(sibling.left)) {
+                    rotateLeft(sibling);
+                    sibling = parent.left;
+                }
+                color(sibling, colorOf(parent));
+                black(sibling.left);
+                black(parent);
+                rotateRight(parent);
+            }
+        }
     }
 
     private Node<K, V> node(K key) {
@@ -132,7 +252,7 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     private int index(Node<K, V> node) {
-        return node.hash ^ (node.hash >>> 16) & (table.length - 1);
+        return (node.hash ^ (node.hash >>> 16)) & (table.length - 1);
     }
 
     private int compareTo(K k1, K k2, int h1, int h2) {
@@ -270,6 +390,27 @@ public class HashMap<K, V> implements Map<K, V> {
         return colorOf(node) == RED;
     }
 
+    private Node<K, V> successor(Node<K, V> node) {
+        if (Objects.isNull(node)) {
+            return null;
+        }
+
+        // 后继节点在右子树中
+        Node<K, V> p = node.right;
+        if (Objects.nonNull(p)) {
+            while (Objects.nonNull(p.left)) {
+                p = p.left;
+            }
+            return p;
+        }
+
+        // 从父节点、祖父节点中寻找前驱节点
+        while (Objects.nonNull(node.parent) && node == node.parent.right) {
+            node = node.parent;
+        }
+
+        return node.parent;
+    }
 
     private static class Node<K, V> {
         K key;
