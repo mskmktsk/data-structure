@@ -21,5 +21,10 @@ public class Main {
         map.put(p2, 1);
         System.out.println("map is empty: " + map.isEmpty());
         System.out.println("map size: " + map.size());
+        System.out.println(map.get("a"));
+        System.out.println(map.get("b"));
+        System.out.println(map.get("c"));
+        System.out.println(map.get(p1));
+        System.out.println(map.get(p2));
     }
 }
