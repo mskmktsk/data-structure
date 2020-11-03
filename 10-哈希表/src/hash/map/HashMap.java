@@ -50,9 +50,10 @@ public class HashMap<K, V> implements Map<K, V> {
 
         Node<K, V> parent = root;
         Node<K, V> node = root;
+        int h1 = Objects.isNull(key) ? 0 : key.hashCode();
         int cmp = 0;
         do {
-            cmp = compareTo(key, node.key);
+            cmp = compareTo(key, node.key, h1, node.hash);
             parent = node;
             if (cmp > 0) {
                 node = node.right;
@@ -102,6 +103,9 @@ public class HashMap<K, V> implements Map<K, V> {
 
     }
 
+    /**
+     * 根据 key 生成对应的索引
+     */
     private int index(K key) {
         if (Objects.isNull(key)) return 0;
         int hash = key.hashCode();
@@ -109,8 +113,36 @@ public class HashMap<K, V> implements Map<K, V> {
         return hash & (table.length - 1);
     }
 
-    private int compareTo(K key1, K key2) {
-        return 0;
+    private int index(Node<K, V> node) {
+        return node.hash ^ (node.hash >>> 16) & (table.length - 1);
+    }
+
+    private int compareTo(K k1, K k2, int h1, int h2) {
+        // 比较哈希
+        int result = h1 - h2;
+        if (result != 0) return result;
+
+        // 比较equals
+        if (Objects.equals(k1, k2)) return 0;
+
+        // 哈希值相等，但是不equals
+        if (Objects.nonNull(k1) && Objects.nonNull(k2)) {
+            String k1Cls = k1.getClass().getName();
+            String k2Cls = k1.getClass().getName();
+            // 比较类名
+            result = k1Cls.compareTo(k2Cls);
+            if (result != 0) return result;
+
+            // 同一类型并且具有可比较性
+            if (k1 instanceof Comparable) {
+                return ((Comparable) k1).compareTo(k2);
+            }
+        }
+
+        // 同一类型不具有比较性
+        // key1不为null，key2为null
+        // key1为null，key2不为null
+        return System.identityHashCode(k1) - System.identityHashCode(k2);
     }
 
     private void afterPut(Node<K, V> node) {
@@ -181,7 +213,7 @@ public class HashMap<K, V> implements Map<K, V> {
         } else if (grand.isRightChild()) {
             grand.parent.right = parent;
         } else { // node 是 root 节点
-            root = parent;
+            table[index(grand)] = parent;
         }
 
         // 更新 child 的 parent
@@ -228,11 +260,13 @@ public class HashMap<K, V> implements Map<K, V> {
         Node<K, V> left;
         Node<K, V> right;
         Node<K, V> parent;
+        int hash;
 
         Node(K key, V value, Node<K, V> parent) {
             this.key = key;
             this.value = value;
             this.parent = parent;
+            this.hash = Objects.isNull(key) ? 0 : key.hashCode();
         }
 
         boolean isLeaf() {
